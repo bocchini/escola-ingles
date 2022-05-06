@@ -1,32 +1,28 @@
-const Sequelize = require('sequelize');
 const dotenv = require('dotenv/config.js');
 
-const sequelize = new Sequelize(
-  'escola_ingles',
-  'root', 
-  '', 
-  {
-    host: '172.17.0.2',
-    dialect: 'mariadb',
-    port: 3306,
-    logging: false,
-    freezeTableName: true,
-    operatorsAliases: false
+module.exports = {
+  "development": {
+    "username": process.env.USER_NAME,
+    "password": process.env.PASSWORD,
+    "database": process.env.DATABASE + "development",
+    "host": process.env.HOST,
+    "port": process.env.PORT,
+    "dialect": process.env.DIALECT
+  },
+  "test": {
+    "username": process.env.USER_NAME,
+    "password": process.env.PASSWORD,
+    "database": process.env.DATABASE + "_test",
+    "host": process.env.HOST,
+    "port": process.env.PORT,
+    "dialect": process.env.DIALECT
+  },
+  "production": {
+    "username": process.env.USER_NAME,
+    "password": process.env.PASSWORD,
+    "database": process.env.DATABASE,
+    "host": process.env.HOST,
+    "port": process.env.PORT,
+    "dialect": process.env.DIALECT
   }
-);
-
-
-// const sequelize = new Sequelize(database, username, password, {
-//   host,
-//   port,
-//   dialect: 'mysql',
-//   operatorsAliases: false,
-//   pool: {
-//     max: 5,
-//     min: 0,
-//     acquire: 30000,
-//     idle: 10000
-//   }
-// });
-
-module.exports = sequelize;
+}

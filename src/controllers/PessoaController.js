@@ -31,8 +31,8 @@ class PessoaController {
   static async cria(req, res){
     try{
       const pessoa = req.body;
-      if(pessoa.length < 0){
-        return res.status(400).json({message: 'Erro com os parâmetros informados'})
+      if(pessoa.length <= 0){
+        return res.status(400).json({message: 'Erro com os parâmetros informados'});
       }
       const pessoaCriada = await database.Pessoas.create(pessoa);
       return res.status(201).json(pessoaCriada);

@@ -28,7 +28,7 @@ class PessoaController {
     }
   }
 
-  static async cria(req, res){
+  static async criar(req, res){
     try{
       const pessoa = req.body;
       if(pessoa.length <= 0){
@@ -77,6 +77,32 @@ class PessoaController {
       return res.status(500).json(err);
     }
   }
+
+  static async pegarUmaMatricula (req, res){
+    const { estudanteId, matriculaId } = req.params;
+    try {
+      const matricula = await database.Matriculas.findOne({
+        where: {
+          id: matriculaId,
+          estudante_id: estudanteId
+        }
+      });
+      return res.status(200).json(matricula);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  };
+
+  static async criarMatricula (req, res){
+    const { estudanteId } = req.params;
+    const novaMatricula = {...req.body, estudante_id: Number(estudanteId)};
+    try {
+      const matriculaCriada = await database.Matriculas.create(novaMatricula);
+      return res.status(201).json(matriculaCriada);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  };
   
 }
 module.exports = PessoaController;

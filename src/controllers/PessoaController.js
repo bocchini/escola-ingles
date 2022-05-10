@@ -1,7 +1,7 @@
 const database = require('../models');
 
 class PessoaController {
-  static async pegaTodas(req, res) {
+  static async pegarTodas(req, res) {
     try {
       const pessoas = await database.Pessoas.findAll();
       return res.status(200).json(pessoas);
@@ -10,7 +10,7 @@ class PessoaController {
     }
   }
 
-  static async pegaUma(req, res){
+  static async pegarUma(req, res){
     try{
       const { id } = req.params;
 
@@ -88,8 +88,8 @@ class PessoaController {
         }
       });
       return res.status(200).json(matricula);
-    } catch (err) {
-      return res.status(500).json(err);
+    } catch (error) {
+      return res.status(500).json(error);
     }
   };
 
@@ -103,6 +103,35 @@ class PessoaController {
       return res.status(500).json(error.message);
     }
   };
+
+  static async atualizarMatricula (req, res) {
+    const { estudanteId, matriculaId} = req.params;
+    const matricula = req.body;
+    try {
+      await database.Matriculas.update(matricula, {
+        where:{
+          id: Number(matriculaId),
+          estudante_id: Number(estudanteId)
+        }
+      })
+      const matriculaAtualizada = await database.Matriculas.findOne({
+        where: {id: matriculaId}
+      });
+      return res.status(200).json(matriculaAtualizada);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  };
   
+  static async deletarMatricula (req, res){
+    const { estudanteId, matriculaId} = req.params;
+    try {
+      await database.Matriculas.destroy({where:{id:matriculaId}});
+      return res.status(200).json({message: "registro excluido com sucesso!"});
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+
+  };
 }
 module.exports = PessoaController;
